@@ -4,13 +4,13 @@
  */
 package com.mycompany.cara_libro;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  *
  * @author a21rubenpe
  */
-
-   
+  
    /* Commit - subir archivo
       push   - llevar a cabo commit
       pull refrescar proyecto
@@ -23,6 +23,7 @@ public class Publicacion {
 
     public Date data;
     public String texto;
+    
     
     public Publicacion(Perfil autor,String texto) {
     }
