@@ -1,4 +1,3 @@
-
 package com.mycompany.cara_libro;
 
 import java.util.Scanner;
@@ -12,6 +11,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
     //Atributos (se añadiran segun haga falta) 
     CaraLibroBD datos;
     Perfil sesionActual;
+    Scanner lector = new Scanner(System.in);
 
     public class xeradorMenus {
         //this.datos = new CaraLibroBD;
@@ -21,15 +21,15 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
     //Estos son los menus
     public void mostrarMenuInicial() { //este menu mostrará las opciones de registrarse e iniciar sesion
         String opciones;
-        boolean enSesion = false;
-        Scanner lector = new Scanner(System.in);
+        boolean menuAtras = false;
 
         do {
             ascii(1);
 
             //  pongo \n para saltar de linea
             System.out.println("1: Registrarse" + '\n'
-                    + "2: iniciar sesion");
+                    + "2: iniciar sesion" + '\n'
+                    + "0: Cerrar");
             opciones = lector.nextLine();
 
             switch (opciones) {//
@@ -39,57 +39,104 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 case "2":
                     iniciarSesion();
                     break;
+                case "0":
+                    menuAtras = true;
+                    break;
                 default:
                     break;
             }
             limpiarPantalla();
-        } while (!enSesion);
+        } while (!menuAtras);
     }
 
-    
-    public void mostrarMenuPrincipal(Perfil p) {
+    public void mostrarMenuPrincipal(Perfil sesionActual) {
+        boolean menuAtras = false;
+        String opciones;
+        do {
+
+            //  pongo \n para saltar de linea
+            System.out.println("Usuario: " + sesionActual.getnombre() + '\n'
+                    + "1: Estado" + '\n'
+                    + "2: Biografia(no implementado)" + '\n'
+                    + "3: Lista de amigos" + '\n'
+                    + "0: Cerrar Sesion");
+            opciones = lector.nextLine();
+
+            switch (opciones) {//
+                case "1":
+                    cambiarEstado(sesionActual);
+                    break;
+                case "2":
+                    //mostrarBiografia(sesionActual);
+                    break;
+                case "3":
+                    mostrarListaAmigos(sesionActual);
+                    break;
+                case "0":
+                    pecharSesion();
+                    menuAtras = true;
+                    break;
+                default:
+                    break;
+            }
+            limpiarPantalla();
+        } while (!menuAtras);
+    }
+/*
+    public void mostrarBiografia(Perfil sesionActual) { //este metodo aun no se puede completar
+        String opciones;
+        if (sesionActual.== null) {
+            System.out.println("Escribe su biografia");
+            sesionActual.setEstado(lector.nextLine());
+        } else {
+            System.out.println(sesionActual.getEstado());
+            System.out.println("1: Cambiar biografia" + '\n'
+                    + "0: Cerrar" + '\n');
+            opciones = lector.nextLine();
+
+            switch (opciones) {
+                case "1":
+                    sesionActual.setEstado(lector.nextLine());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+*/
+    public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {
 
     }
-    
-    /* Aun no implementado
-    public void mostrarBiografia(Perfil p) {
+
+    public void mostrarListaAmigos(Perfil sesionActual) {
 
     }
 
-    public void mostrarSolicitudesDeAmizade(Perfil p) {
+    public void mostrarMensajes(Perfil sesionActual) {
 
     }
-    public void mostrarListaAmigos(Perfil p) {
 
-    }
-    public void mostrarMensajes(Perfil p) {
-
-    }
-    
-    //acaban los menus
-    
     public void pecharSesion() {
-
+        sesionActual = null;
     }
-     */
+
     private void crearPerfil() {
 
         boolean atras = false;
         boolean correcto = false;
-        Scanner lector = new Scanner(System.in);
         String nombre;
         String contraseña;
 
         do {
             ascii(2);
-            System.out.println("Inserte 1 y enter para ir al menu anterior" + '\n' + "O inserte nombre");
+            System.out.println("Inserte 0 y enter para ir al menu anterior" + '\n' + "O inserte nombre");
             nombre = lector.nextLine();
-            if ("1".equals(nombre)) {//compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
+            if ("0".equals(nombre)) {//compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
                 atras = true;
             } else {
                 System.out.println("Contraseña");
                 contraseña = lector.nextLine();
-                if (this.datos.buscarPerfil(nombre)) {//esta comparacion sirve para no tener  problemas con varios usuarios llamados igual
+                if (this.datos.obterPerfil(nombre) != null) {//esta comparacion sirve para no tener  problemas con varios usuarios llamados igual
                     System.out.println("Ese usuario ya esta en uso");
                 } else {
                     CaraLibroBD.engadirPerfil(new Perfil(nombre, contraseña));
@@ -104,23 +151,44 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
 
         boolean atras = false;
         boolean correcto = false;
-        Scanner lector = new Scanner(System.in);
         String nombre;
         String contraseña;
 
         do {
             ascii(3);
-            System.out.println("Inserte 1 y enter para ir al menu anterior" + '\n' + "O inserte nombre");
+            System.out.println("Inserte 0 y enter para ir al menu anterior" + '\n' + "O inserte nombre");
             nombre = lector.nextLine();
-            if ("1".equals(nombre)) { //compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
+            if ("0".equals(nombre)) { //compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
                 atras = true;
             } else {
                 System.out.println("Contraseña");
                 contraseña = lector.nextLine();
-            }
+            }//añadir codigo para verificar contraseña y nombre + iniciar sesion
+
         } while (!atras && !correcto);
         if (correcto) {
-            mostrarMenuPrincipal(Placeholder); //aun no se ha añadido la clase perfil
+            mostrarMenuPrincipal(sesionActual);
+        }
+    }
+
+    private void cambiarEstado(Perfil sesionActual) {
+        String opciones;
+        if (sesionActual.getEstado() == null) {
+            System.out.println("Inserte Su primer estado");
+            sesionActual.setEstado(lector.nextLine());
+        } else {
+            System.out.println(sesionActual.getEstado());
+            System.out.println("1: Cambiar estado" + '\n'
+                    + "0: Cerrar" + '\n');
+            opciones = lector.nextLine();
+
+            switch (opciones) {
+                case "1":
+                    sesionActual.setEstado(lector.nextLine());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
