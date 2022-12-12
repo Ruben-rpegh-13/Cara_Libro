@@ -5,6 +5,7 @@
 package com.mycompany.cara_libro;
 
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  *
@@ -19,8 +20,14 @@ public class Mensaxe {
     
     public Mensaxe(String texto,Perfil ) {
         
-        
-        
+    Scanner teclado= new Scanner (System.in);     
+    texto=teclado.nextLine();
+    
+    
+    
+    if (lido=true)
+            System.out.println(" ");
+            System.out.println("Lido");
         
         
     }
