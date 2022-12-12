@@ -4,13 +4,24 @@
  */
 package com.mycompany.cara_libro;
 
+import java.util.Date;
+
 /**
  *
  * @author a21rubenpe
  */
 public class Mensaxe {
 
-    public Mensaxe() {
+    public Date data; 
+    public String texto;
+    public boolean lido;
+    
+    
+    public Mensaxe(String texto,Perfil ) {
+        
+        
+        
+        
     }
     
     
