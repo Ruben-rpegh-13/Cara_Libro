@@ -16,8 +16,7 @@ class CaraLibroBD {
     public CaraLibroBD() {
     }
     
-    public static void engadirPerfil (Perfil novoPerfil){
-        
+    public static void engadirPerfil (Perfil novoPerfil){    
         datos.add(novoPerfil);
     }
     
@@ -26,6 +25,14 @@ class CaraLibroBD {
         
        
         
+        return
+    }
+    
+    public static Perfil buscarPerfil (String nombre){
+     
+        
+        
+        return
     }
     
 }

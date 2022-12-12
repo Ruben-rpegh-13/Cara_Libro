@@ -11,6 +11,5 @@ public class Cara_Libro {
         System.out.println();
         XeradorMenus menu1 = new XeradorMenus();
         menu1.mostrarMenuInicial();
-                
     }
 }

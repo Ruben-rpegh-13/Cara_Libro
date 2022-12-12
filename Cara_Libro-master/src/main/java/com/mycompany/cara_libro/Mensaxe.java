@@ -9,5 +9,9 @@ package com.mycompany.cara_libro;
  * @author a21rubenpe
  */
 public class Mensaxe {
-    esto es una prueba del jodido github
+
+    public Mensaxe() {
+    }
+    
+    
 }

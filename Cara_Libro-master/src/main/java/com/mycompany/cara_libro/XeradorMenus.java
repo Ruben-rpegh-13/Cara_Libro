@@ -92,7 +92,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 if (this.datos.buscarPerfil(nombre)) {//esta comparacion sirve para no tener  problemas con varios usuarios llamados igual
                     System.out.println("Ese usuario ya esta en uso");
                 } else {
-                    this.datos.engadirPerfil(new Perfil(nombre, contraseña));
+                    CaraLibroBD.engadirPerfil(new Perfil(nombre, contraseña));
                     correcto = true;
                 }
             }

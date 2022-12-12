@@ -42,8 +42,8 @@ class Perfil {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.estado = estado;
-        this.amigos = new ArrayList<>();
-        this.solicitud = new ArrayList <>();
+        this.amigos = new ArrayList<Perfil>();
+        this.solicitud = new ArrayList <Perfil>();
         
        
     }
