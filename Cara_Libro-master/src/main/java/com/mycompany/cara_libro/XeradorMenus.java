@@ -13,8 +13,8 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
     Perfil sesionActual;
     Scanner lector = new Scanner(System.in);
 
-    public class xeradorMenus {
-        //this.datos = new CaraLibroBD;
+    public XeradorMenus() {
+
     }
 
     //P representa el nombre del objeto perfil, puede cambiar luego
@@ -82,34 +82,66 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             limpiarPantalla();
         } while (!menuAtras);
     }
-/*
-    public void mostrarBiografia(Perfil sesionActual) { //este metodo aun no se puede completar
+
+    /*
+    public void mostrarBiografia(Perfil sesionActual) { 
         String opciones;
-        if (sesionActual.== null) {
+        if (sesionActual.getBiografia()== null) {
             System.out.println("Escribe su biografia");
-            sesionActual.setEstado(lector.nextLine());
+            sesionActual.setBiografia(lector.nextLine());
         } else {
-            System.out.println(sesionActual.getEstado());
+            System.out.println(sesionActual.getBiografia());
             System.out.println("1: Cambiar biografia" + '\n'
                     + "0: Cerrar" + '\n');
             opciones = lector.nextLine();
 
             switch (opciones) {
                 case "1":
-                    sesionActual.setEstado(lector.nextLine());
+                    sesionActual.setBiografia(lector.nextLine());
                     break;
                 default:
                     break;
             }
         }
-    }
-*/
+    }*/
     public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {
 
     }
 
     public void mostrarListaAmigos(Perfil sesionActual) {
+        boolean menuAtras = false;
+        String opciones;
+        String nombreAmigo;
+        Perfil amigo;
+        do {
+            if (sesionActual.amigos.size == 0) {
+                System.out.println("Parece que aun no tienes amigos, quieres añadir uno?" + '\n'
+                        + "1: Añadir amigo" + '\n'
+                        + "0: Atras");
+                opciones = lector.nextLine();
+                switch (opciones) {
+                    case "1":
+                        System.out.println("nombre de su amigo");
+                        nombreAmigo = lector.nextLine();
+                        amigo = CaraLibroBD.buscarPerfil(nombreAmigo);
+                        if (amigo == null) {
+                            System.out.println("Lo siento, tu amigo no existe");
+                        } else {
+                            sesionActual.engadirSolicitudeDeAmistad(amigo);
+                            System.out.println("Solicitud enviada");
+                        }
+                        break;
+                    case "0":
+                        menuAtras = true;
+                        break;
+                    default:
+                        break;
+                }
+            } else {
 
+            }
+            limpiarPantalla();
+        } while (!menuAtras);
     }
 
     public void mostrarMensajes(Perfil sesionActual) {
