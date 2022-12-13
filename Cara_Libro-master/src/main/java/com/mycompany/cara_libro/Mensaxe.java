@@ -18,7 +18,7 @@ public class Mensaxe {
     public boolean lido;
     
     
-    public Mensaxe(String texto,Perfil ) {
+    public Mensaxe(String texto,Perfil perfil ) {
         
     Scanner teclado= new Scanner (System.in);     
     texto=teclado.nextLine();

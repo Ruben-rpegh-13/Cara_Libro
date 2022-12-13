@@ -1,6 +1,8 @@
 
 package com.mycompany.cara_libro;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author VictorLandin & Ruben-rpegh-13
@@ -10,7 +12,8 @@ class Perfil {
     public String nombre;
     public String apellidos;
     public String estado;
-
+    ArrayList<Perfil> amigos;
+    
     public String getnombre() {
         return nombre;
     }
@@ -35,21 +38,16 @@ class Perfil {
         this.estado = estado;
     }
 
-    
-    
-    Perfil(String nombre, String contraseña) {
-        
+    public Perfil(String nombre, String apellidos, String estado) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.estado = estado;
-        this.amigos = new ArrayList<Perfil>();
-        this.solicitud = new ArrayList <Perfil>();
-        
-       
+        this.amigos= new ArrayList<>();
     }
-      public Perfil engadirAmigo (Perfil){
-          
-          
+
+    
+      public void engadirAmigo (Perfil perfil){
+         this.amigos.add(perfil);
       }
     
     
