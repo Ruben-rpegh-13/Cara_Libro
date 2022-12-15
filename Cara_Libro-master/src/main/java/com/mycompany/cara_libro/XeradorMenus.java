@@ -148,11 +148,11 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             if ("0".equals(nombre)) {//compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
                 atras = true;
             } else {
-                System.out.println("Contraseña");
-                contraseña = lector.nextLine();
                 if (CaraLibroBD.buscarPerfil(nombre) != null) {//esta comparacion sirve para no tener  problemas con varios usuarios llamados igual
                     System.out.println("Ese usuario ya esta en uso");
                 } else {
+                    System.out.println("Contraseña");
+                    contraseña = lector.nextLine();
                     CaraLibroBD.engadirPerfil(new Perfil(nombre, contraseña));
                     correcto = true;
                 }
