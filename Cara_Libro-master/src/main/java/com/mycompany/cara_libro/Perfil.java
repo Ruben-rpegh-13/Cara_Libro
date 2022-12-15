@@ -10,25 +10,25 @@ import java.util.ArrayList;
 class Perfil {
     
     public String nombre;
-    public String apellidos;
+    public String contraseña;
     public String estado;
     private ArrayList<Perfil> amigos;
     private ArrayList<Perfil> solicitud;
 
-    public String getnombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setnombre(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getapellidos() {
-        return apellidos;
+    public String getContraseña() {
+        return contraseña;
     }
 
-    public void setapellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setContraseña(String apellidos) {
+        this.contraseña = apellidos;
     }
 
     public String getEstado() {
@@ -60,7 +60,7 @@ class Perfil {
     Perfil(String nombre, String contraseña) {
         
         this.nombre = nombre;
-        this.apellidos = apellidos;
+        this.contraseña = contraseña;
         this.estado = estado;
         this.amigos = new ArrayList<Perfil>();
         this.solicitud = new ArrayList <Perfil>();

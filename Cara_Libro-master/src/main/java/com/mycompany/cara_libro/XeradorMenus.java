@@ -55,7 +55,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
         do {
 
             //  pongo \n para saltar de linea
-            System.out.println("Usuario: " + sesionActual.getnombre() + '\n'
+            System.out.println("Usuario: " + sesionActual.getNombre() + '\n'
                     + "1: Estado" + '\n'
                     + "2: Biografia(no implementado)" + '\n'
                     + "3: Lista de amigos" + '\n'
@@ -99,7 +99,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
         do {
 
             //  pongo \n para saltar de linea
-            System.out.println("Usuario: " + sesionActual.getnombre() + '\n'
+            System.out.println("Usuario: " + sesionActual.getNombre() + '\n'
                     + "1: Lista de amigos: " + sesionActual.getAmigos().size() + " amigos" + '\n'
                     + "2: Solicitudes de amistad: " + sesionActual.getSolicitud().size() + " pendientes" + '\n'
                     + "3: Enviar solicitud" + '\n'
@@ -232,7 +232,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 }
             } else {
                 for (int cont = 0; cont < sesionActual.getAmigos().size(); cont++) {
-                    System.out.println(sesionActual.getAmigos().get(cont).getnombre());
+                    System.out.println(sesionActual.getAmigos().get(cont).getNombre());
                     if (sesionActual.getAmigos().get(cont).getEstado() == null){
                         System.out.println("\t" + "Sin estado");
                     } else {
