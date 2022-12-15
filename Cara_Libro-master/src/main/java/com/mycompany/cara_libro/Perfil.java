@@ -13,7 +13,7 @@ class Perfil {
     public String contraseña;
     public String estado;
     private ArrayList<Perfil> amigos;
-    private ArrayList<Perfil> solicitud;
+    private ArrayList<String> solicitud;
 
     public String getNombre() {
         return nombre;
@@ -47,11 +47,11 @@ class Perfil {
         this.amigos = amigos;
     }
 
-    public ArrayList<Perfil> getSolicitud() {
+    public ArrayList<String> getSolicitud() {
         return solicitud;
     }
 
-    public void setSolicitud(ArrayList<Perfil> solicitud) {
+    public void setSolicitud(ArrayList<String> solicitud) {
         this.solicitud = solicitud;
     }
 
@@ -75,8 +75,8 @@ class Perfil {
           
       }
 
-    public void engadirSolicitudeDeAmistad(Perfil amigo) {
-        
+    public void engadirSolicitudeDeAmistad(String nombreAmigo) {
+        solicitud.add(nombreAmigo);
     }
     
     

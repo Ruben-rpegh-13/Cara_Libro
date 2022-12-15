@@ -83,10 +83,9 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
         } while (!menuAtras);
     }
 
-    
-    public void mostrarBiografia(Perfil sesionActual) { 
+    public void mostrarBiografia(Perfil sesionActual) {
         String opciones;
-        
+
     }
 
     public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {
@@ -233,7 +232,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             } else {
                 for (int cont = 0; cont < sesionActual.getAmigos().size(); cont++) {
                     System.out.println(sesionActual.getAmigos().get(cont).getNombre());
-                    if (sesionActual.getAmigos().get(cont).getEstado() == null){
+                    if (sesionActual.getAmigos().get(cont).getEstado() == null) {
                         System.out.println("\t" + "Sin estado");
                     } else {
                         System.out.println("\t" + sesionActual.getAmigos().get(cont).getEstado());
@@ -261,20 +260,21 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 System.out.println("Esta persona ya es tu amiga");
             } else if (sesionActual.nombre.equals(nombreAmigo)) {
                 System.out.println("No puedes ser tu propio amigo");
-            } else if (sesionActual.getSolicitud().contains(amigo)) {
-                System.out.println("Ya enviaste una solicitud");
-            } else if (CaraLibroBD.buscarPerfil(nombreAmigo).getSolicitud().contains(sesionActual)) {
+            } else if (sesionActual.getSolicitud().contains(nombreAmigo)) {
                 System.out.println("Ya tienes una solicitud de esta persona");
+            } else if (CaraLibroBD.buscarPerfil(nombreAmigo).getSolicitud().contains(sesionActual.getNombre())) {
+                //Este if comprueba si la persona a la que envias una solicitud ya tiene una solicitud tuya
+                System.out.println("Ya enviaste una solicitud");
             } else {
-                sesionActual.engadirSolicitudeDeAmistad(amigo);
+                sesionActual.engadirSolicitudeDeAmistad(nombreAmigo);
                 System.out.println("Solicitud enviada");
                 enviado = true;
             }
-            if (!enviado){
-                System.out.println("Reintentar?" + '\n' +
-            "0: Atras" + '\n' +
-            "1: Reintentar");
-                if ("0".equals(lector.nextLine())){
+            if (!enviado) {
+                System.out.println("Reintentar?" + '\n'
+                        + "0: Atras" + '\n'
+                        + "1: Reintentar");
+                if ("0".equals(lector.nextLine())) {
                     menuAtras = true;
                 }
             }
