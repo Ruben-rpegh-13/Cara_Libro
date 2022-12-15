@@ -12,8 +12,9 @@ class Perfil {
     public String nombre;
     public String apellidos;
     public String estado;
-    ArrayList<Perfil> amigos;
-    
+    private ArrayList<Perfil> amigos;
+    private ArrayList<Perfil> solicitud;
+
     public String getnombre() {
         return nombre;
     }
@@ -38,17 +39,45 @@ class Perfil {
         this.estado = estado;
     }
 
-    public Perfil(String nombre, String apellidos, String estado) {
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.estado = estado;
-        this.amigos= new ArrayList<>();
+    public ArrayList<Perfil> getAmigos() {
+        return amigos;
+    }
+
+    public void setAmigos(ArrayList<Perfil> amigos) {
+        this.amigos = amigos;
+    }
+
+    public ArrayList<Perfil> getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(ArrayList<Perfil> solicitud) {
+        this.solicitud = solicitud;
     }
 
     
-      public void engadirAmigo (Perfil perfil){
-         this.amigos.add(perfil);
+    
+    Perfil(String nombre, String contraseña) {
+        
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.estado = estado;
+        this.amigos = new ArrayList<Perfil>();
+        this.solicitud = new ArrayList <Perfil>();
+        
+       
+    }
+      public Perfil engadirAmigo (Perfil amigo){
+          
+          
+        return null;
+          
+          
       }
+
+    public void engadirSolicitudeDeAmistad(Perfil amigo) {
+        
+    }
     
     
     

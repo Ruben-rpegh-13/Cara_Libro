@@ -21,7 +21,7 @@ class CaraLibroBD {
     }
     
     
-    public static Perfil obterPerfil (String nombre) {
+    public static Perfil obterPerfil (String nombre, String contraseña) {
         
        
         
