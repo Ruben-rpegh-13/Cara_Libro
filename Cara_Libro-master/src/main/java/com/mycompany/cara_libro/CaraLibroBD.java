@@ -29,10 +29,12 @@ class CaraLibroBD {
     }
     
     public static Perfil buscarPerfil (String nombre){
-     /* Sysoutprint (pedir nombre );
+     /* SOP (pedir nombre );
      nombre=resul arriba; */
      
      Perfil devolver=null;
+     
+     for();
      
      for(recorre base de datos ){
      si el actual perfil.nombre equals String nombre 
