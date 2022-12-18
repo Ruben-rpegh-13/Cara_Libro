@@ -75,12 +75,18 @@ class Perfil {
           
       }
 
-    public void engadirSolicitudeDeAmistad(Perfil amigo) {
-        amigo.solicitud.add(nombre);
+    public void engadirSolicitudeDeAmistad(Perfil perfilAmigo) { //añade tu nombre a la lista de solicitudes de la otra persona
+        perfilAmigo.solicitud.add(nombre);
     }
     
-    public void aceptarSolicitudeDeAmistad(Perfil amigo) {
-        amigo.solicitud.add(nombre);
+    public void aceptarSolicitudeDeAmistad(Perfil perfilAmigo) { //acepta la solicitud, se añade como amigo en ambos perfiles y luego  elimina  la solicitud
+        amigos.add(perfilAmigo);
+        CaraLibroBD.buscarPerfil(perfilAmigo.getNombre()).amigos.add(this);
+        solicitud.remove(perfilAmigo.getNombre());
+    }
+
+    public void rexeitarSolicitudeDeAmistad(Perfil perfilAmigo) { //elimina la solicitud
+        solicitud.remove(perfilAmigo.getNombre());
     }
     
 }

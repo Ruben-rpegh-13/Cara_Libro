@@ -90,30 +90,39 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
 
     public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {//muestra las solicitudes y te deja aceptarlas
         boolean menuAtras = false;
-        String nombreAmigo;
+        String nombreSolicitud;
 
         do {
+            
             if (sesionActual.getSolicitud().isEmpty()) {
-                System.out.println("Parece que aun no tienes solicitudes de amistad");
+                System.out.println("Parece que aun no tienes solicitudes de amistad, pulse enter para volver");
+                lector.nextLine();
+                menuAtras = true;
             } else {
                 for (int cont = 0; cont < sesionActual.getSolicitud().size(); cont++) {
                     System.out.println(sesionActual.getSolicitud().get(cont));
                 }
-                System.out.println("Escriba el nombre del amigo que quiere añador o 0 para volver al menu anterior");
-                nombreAmigo = lector.nextLine();
-                if (nombreAmigo == "0"){
+                System.out.println("Escriba el nombre de la solicitud que desea ver o 0 para volver al menu anterior");
+                nombreSolicitud = lector.nextLine();
+                if (nombreSolicitud.equals("0")){
                     menuAtras = true;
                 } else {
                     for (int cont = 0; cont < sesionActual.getSolicitud().size(); cont++) {
-                        if (sesionActual.getSolicitud().get(cont) == nombreAmigo){
-                            Perfil amigo = CaraLibroBD.buscarPerfil(nombreAmigo);
-                            sesionActual.aceptarSolicitudeDeAmistad(amigo);
+                        if (sesionActual.getSolicitud().get(cont).equals(nombreSolicitud)){
+                            System.out.println(sesionActual.getSolicitud());
+                            if (CaraLibroBD.buscarPerfil(nombreSolicitud).getEstado() == null) {
+                                System.out.println("\t" + "Sin estado");
+                            } else {
+                                System.out.println("\t" + CaraLibroBD.buscarPerfil(nombreSolicitud).getEstado());
+                            }
                         }
                     }
+                    System.out.println("No es un nombre valido");
                 }
             }
-            limpiarPantalla();
+            
         } while (!menuAtras);
+        limpiarPantalla();
     }
 
     public void mostrarListaAmigos(Perfil sesionActual) {
@@ -286,7 +295,12 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             } else if (sesionActual.nombre.equals(nombreAmigo)) {
                 System.out.println("No puedes ser tu propio amigo");
             } else if (sesionActual.getSolicitud().contains(nombreAmigo)) {
-                System.out.println("Ya tienes una solicitud de esta persona");
+                System.out.println("Ya tienes una solicitud de esta persona, ¿quiere añadirla como amigo?" + '\n' +
+                                    "0: no"  + '\n' +
+                                    "1: si");
+                if (lector.nextLine().equals("1")){
+                    sesionActual.engadirAmigo(amigo);
+                }
             } else if (CaraLibroBD.buscarPerfil(nombreAmigo).getSolicitud().contains(sesionActual.getNombre())) {
                 //Este if comprueba si la persona a la que envias una solicitud ya tiene una solicitud tuya
                 System.out.println("Ya enviaste una solicitud");
