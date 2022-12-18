@@ -20,11 +20,6 @@ public class Comentario {
     public Comentario(String texto) {
         
       texto =teclado.nextLine();
-        System.out.println(LocalDate);
-        
-        
+        System.out.println(LocalDate); 
     }
-    
-    
-    
 }

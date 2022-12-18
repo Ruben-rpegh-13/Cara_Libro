@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class XeradorMenus { //muchas cosas estan comentadas debido a probar distintos metodos
 
-    //Atributos (se añadiran segun haga falta) 
+    //Atributos (se añadiran mas si llegan a ser necesarios) 
     CaraLibroBD datos;
     Perfil sesionActual;
     Scanner lector = new Scanner(System.in);
@@ -62,7 +62,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                     + "0: Cerrar Sesion");
             opciones = lector.nextLine();
 
-            switch (opciones) {//
+            switch (opciones) {// Aqui se mostraran las opciones que tiene el menu principal
                 case "1":
                     cambiarEstado(sesionActual);
                     break;
@@ -82,22 +82,23 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             limpiarPantalla();
         } while (!menuAtras);
     }
-
-    public void mostrarBiografia(Perfil sesionActual) {
+    // enseña tanto el estado escrito por la persona como la lista de publicaciones
+    public void mostrarBiografia(Perfil sesionActual) { 
         String opciones;
 
     }
-
-    public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {//muestra las solicitudes y te deja aceptarlas
+    //muestra las solicitudes y te deja aceptarlas
+    public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {
         boolean menuAtras = false;
         String nombreSolicitud;
 
         do {
-            
+            // en caso de no tener solicitudes
             if (sesionActual.getSolicitud().isEmpty()) {
                 System.out.println("Parece que aun no tienes solicitudes de amistad, pulse enter para volver");
                 lector.nextLine();
                 menuAtras = true;
+                //Si hay solicitudes,las enseña y te deja escoger una o salir del menu
             } else {
                 for (int cont = 0; cont < sesionActual.getSolicitud().size(); cont++) {
                     System.out.println(sesionActual.getSolicitud().get(cont));
@@ -106,6 +107,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 nombreSolicitud = lector.nextLine();
                 if (nombreSolicitud.equals("0")){
                     menuAtras = true;
+                    //Te muestra el perfil seleccionado
                 } else {
                     for (int cont = 0; cont < sesionActual.getSolicitud().size(); cont++) {
                         if (sesionActual.getSolicitud().get(cont).equals(nombreSolicitud)){
@@ -119,18 +121,18 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                     }
                     System.out.println("No es un nombre valido");
                 }
-            }
-            
+            }           
         } while (!menuAtras);
         limpiarPantalla();
     }
 
+        //muestra la lista de amigos
     public void mostrarListaAmigos(Perfil sesionActual) {
         boolean menuAtras = false;
         String opciones;
         do {
 
-            //  pongo \n para saltar de linea
+            //  muestra las opciones que dispone el menu
             System.out.println("Usuario: " + sesionActual.getNombre() + '\n'
                     + "1: Lista de amigos: " + sesionActual.getAmigos().size() + " amigos" + '\n'
                     + "2: Solicitudes de amistad: " + sesionActual.getSolicitud().size() + " pendientes" + '\n'
@@ -162,11 +164,12 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
     public void mostrarMensajes(Perfil sesionActual) {
 
     }
-
+            //Saldrias de la sesion con ese perfil
     public void pecharSesion() {
         sesionActual = null;
     }
-
+            
+            //
     private void crearPerfil() {
 
         boolean atras = false;
@@ -193,7 +196,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             limpiarPantalla();
         } while (!correcto && !atras); //servirta para cuando haya que hacer la opcion de poner la contraseña dos veces
     }
-
+            //Entrarias a la sesion de ese perfil
     private void iniciarSesion() {
 
         boolean atras = false;
@@ -205,7 +208,8 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             ascii(3);
             System.out.println("Inserte 0 y enter para ir al menu anterior" + '\n' + "O inserte nombre");
             nombre = lector.nextLine();
-            if ("0".equals(nombre)) { //compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
+            //compara nombre porque si es igual a 1 vuelve al menu anterior en vez de aceptarlo como usuario
+            if ("0".equals(nombre)) {
                 atras = true;
             } else {
                 System.out.println("Contraseña");
@@ -221,7 +225,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             mostrarMenuPrincipal(sesionActual);
         }
     }
-
+            //Muestra el menu para cambiar de estado o para escribir uno si no hay ninguno
     private void cambiarEstado(Perfil sesionActual) {
         String opciones;
         if (sesionActual.getEstado() == null) {
@@ -243,7 +247,9 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
         }
     }
 
-    private void listaAmigos(Perfil sesionActual) {//muesta tus amigos y sus estados o te redirije a enviar solicitud
+    
+    //muesta tus amigos y sus estados o te redirije a enviar solicitud
+    private void listaAmigos(Perfil sesionActual) {
         boolean menuAtras = false;
         String opciones;
 
@@ -277,14 +283,15 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
         } while (!menuAtras);
 
     }
-
-    private void prepararSolicitudAmistad(Perfil sesionActual) { //revisa que el usuario sea valido de varias maneras y luego envia la solicitud
+            //revisa que el usuario sea valido de varias maneras y luego envia la solicitud
+    private void prepararSolicitudAmistad(Perfil sesionActual) { 
         String nombreAmigo;
         Perfil amigo;
         boolean menuAtras = false;
         boolean enviado = false;
         do {
             limpiarPantalla();
+            //Aqui verifica que el nombre existe y que no es el nombre del usuario actual
             System.out.println("Inserte nombre de su amigo");
             nombreAmigo = lector.nextLine();
             amigo = CaraLibroBD.buscarPerfil(nombreAmigo);
@@ -302,7 +309,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                     sesionActual.engadirAmigo(amigo);
                 }
             } else if (CaraLibroBD.buscarPerfil(nombreAmigo).getSolicitud().contains(sesionActual.getNombre())) {
-                //Este if comprueba si la persona a la que envias una solicitud ya tiene una solicitud tuya
+                //Se comprueba si la persona a la que envias una solicitud ya tiene una solicitud tuya
                 System.out.println("Ya enviaste una solicitud");
             } else {
                 sesionActual.engadirSolicitudeDeAmistad(amigo);
@@ -319,8 +326,8 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             }
         } while (!enviado && !menuAtras);
     }
-
-    private void limpiarPantalla() {//este metodo limpia la pantalla llenando 100 lineas
+            //este metodo vacia la pantalla
+    private void limpiarPantalla() { 
         for (int i = 0; i < 100; i++) {
             System.out.println();
         }

@@ -12,41 +12,33 @@ import java.util.ArrayList;
 class CaraLibroBD {
 
     private static ArrayList <Perfil> datos = new ArrayList();
-
     public CaraLibroBD() {
     }
     
+    //Este me
     public static void engadirPerfil (Perfil novoPerfil){    
         datos.add(novoPerfil);
     }
     
     
     public static Perfil obterPerfil (String nombre, String contraseña) {
-        Perfil devolver = null;
-     
+        Perfil devolver = null;    
      for(int contador = 0; contador < datos.size() ; contador++){
         if(datos.get(contador).getNombre().equals(nombre) && datos.get(contador).getContraseña().equals(contraseña)){
             //verifica nombre Y contraseña
             devolver = datos.get(contador);
         }
      }
-        
-        return devolver;
+     return devolver;
     }
     
-    public static Perfil buscarPerfil (String nombre){
-     
+    public static Perfil buscarPerfil (String nombre){    
      Perfil devolver = null;
-     
      for(int contador = 0; contador < datos.size() ; contador++){
         if(datos.get(contador).getNombre().equals(nombre)){
             devolver = datos.get(contador);
-        }
-                     
-                     
-     }
-        
-        
+        }        
+     }      
         return devolver;
     }
     

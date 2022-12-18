@@ -7,7 +7,11 @@ import java.util.ArrayList;
  *
  * @author VictorLandin & Ruben-rpegh-13
  */
+
+
 class Perfil {
+    
+    //atributos del perfil
     
     public String nombre;
     public String contraseña;
@@ -15,6 +19,8 @@ class Perfil {
     private ArrayList<Perfil> amigos;
     private ArrayList<String> solicitud;
 
+    //Getter  y Setter 
+    
     public String getNombre() {
         return nombre;
     }
@@ -67,6 +73,7 @@ class Perfil {
         
        
     }
+            //Este metodo sirve para una añadir un perfil a tu lista de amigos
       public Perfil engadirAmigo (Perfil amigo){
           
           
@@ -74,18 +81,18 @@ class Perfil {
           
           
       }
-
-    public void engadirSolicitudeDeAmistad(Perfil perfilAmigo) { //añade tu nombre a la lista de solicitudes de la otra persona
+             //añade tu nombre a la lista de solicitudes de la otra persona
+    public void engadirSolicitudeDeAmistad(Perfil perfilAmigo) {
         perfilAmigo.solicitud.add(nombre);
     }
-    
-    public void aceptarSolicitudeDeAmistad(Perfil perfilAmigo) { //acepta la solicitud, se añade como amigo en ambos perfiles y luego  elimina  la solicitud
+            //acepta la solicitud, se añade como amigo en ambos perfiles y luego  elimina  la solicitud
+    public void aceptarSolicitudeDeAmistad(Perfil perfilAmigo) { 
         amigos.add(perfilAmigo);
         CaraLibroBD.buscarPerfil(perfilAmigo.getNombre()).amigos.add(this);
         solicitud.remove(perfilAmigo.getNombre());
     }
-
-    public void rexeitarSolicitudeDeAmistad(Perfil perfilAmigo) { //elimina la solicitud
+            //elimina la solicitud de la lista de pendientes
+    public void rexeitarSolicitudeDeAmistad(Perfil perfilAmigo) { 
         solicitud.remove(perfilAmigo.getNombre());
     }
     
