@@ -63,7 +63,7 @@ class Perfil {
         this.contraseña = contraseña;
         this.estado = estado;
         this.amigos = new ArrayList<Perfil>();
-        this.solicitud = new ArrayList <Perfil>();
+        this.solicitud = new ArrayList <String>();
         
        
     }

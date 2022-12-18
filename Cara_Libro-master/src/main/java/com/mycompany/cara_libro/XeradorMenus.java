@@ -157,7 +157,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                     correcto = true;
                 }
             }
-
+            limpiarPantalla();
         } while (!correcto && !atras); //servirta para cuando haya que hacer la opcion de poner la contraseña dos veces
     }
 
@@ -177,11 +177,12 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
             } else {
                 System.out.println("Contraseña");
                 contraseña = lector.nextLine();
-                if (CaraLibroBD.obterPerfil(nombre, contraseña) != null) {
+                sesionActual = CaraLibroBD.obterPerfil(nombre, contraseña);
+                if (sesionActual != null) {
                     correcto = true;
-                }
-            }//añadir codigo para verificar contraseña y nombre + iniciar sesion
-
+                } 
+            }
+            limpiarPantalla();
         } while (!atras && !correcto);
         if (correcto) {
             mostrarMenuPrincipal(sesionActual);
