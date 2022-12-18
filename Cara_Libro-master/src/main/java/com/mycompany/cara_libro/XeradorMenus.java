@@ -88,8 +88,32 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
 
     }
 
-    public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {
+    public void mostrarSolicitudesDeAmizade(Perfil sesionActual) {//muestra las solicitudes y te deja aceptarlas
+        boolean menuAtras = false;
+        String nombreAmigo;
 
+        do {
+            if (sesionActual.getSolicitud().isEmpty()) {
+                System.out.println("Parece que aun no tienes solicitudes de amistad");
+            } else {
+                for (int cont = 0; cont < sesionActual.getSolicitud().size(); cont++) {
+                    System.out.println(sesionActual.getSolicitud().get(cont));
+                }
+                System.out.println("Escriba el nombre del amigo que quiere añador o 0 para volver al menu anterior");
+                nombreAmigo = lector.nextLine();
+                if (nombreAmigo == "0"){
+                    menuAtras = true;
+                } else {
+                    for (int cont = 0; cont < sesionActual.getSolicitud().size(); cont++) {
+                        if (sesionActual.getSolicitud().get(cont) == nombreAmigo){
+                            Perfil amigo = CaraLibroBD.buscarPerfil(nombreAmigo);
+                            sesionActual.aceptarSolicitudeDeAmistad(amigo);
+                        }
+                    }
+                }
+            }
+            limpiarPantalla();
+        } while (!menuAtras);
     }
 
     public void mostrarListaAmigos(Perfil sesionActual) {
@@ -267,7 +291,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 //Este if comprueba si la persona a la que envias una solicitud ya tiene una solicitud tuya
                 System.out.println("Ya enviaste una solicitud");
             } else {
-                sesionActual.engadirSolicitudeDeAmistad(nombreAmigo);
+                sesionActual.engadirSolicitudeDeAmistad(amigo);
                 System.out.println("Solicitud enviada");
                 enviado = true;
             }

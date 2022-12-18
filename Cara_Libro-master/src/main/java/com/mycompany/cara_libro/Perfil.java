@@ -75,10 +75,12 @@ class Perfil {
           
       }
 
-    public void engadirSolicitudeDeAmistad(String nombreAmigo) {
-        solicitud.add(nombreAmigo);
+    public void engadirSolicitudeDeAmistad(Perfil amigo) {
+        amigo.solicitud.add(nombre);
     }
     
-    
+    public void aceptarSolicitudeDeAmistad(Perfil amigo) {
+        amigo.solicitud.add(nombre);
+    }
     
 }
