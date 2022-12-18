@@ -3,12 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.cara_libro;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 /**
  *
- * @author a21rubenpe
+ * @author VictorLandin & Ruben-rpegh-13
  */
   
    /* Commit - subir archivo
@@ -21,17 +21,21 @@ import java.util.Scanner;
             
 public class Publicacion {
 
-    public Date data;
+    public LocalDate data;
     public String texto;
+    Scanner teclado = new Scanner(System.in);
     
-    
+    //metodo para crear una publicacion dentro de un perfil
     public Publicacion(Perfil autor,String texto) {
+        texto =teclado.nextLine();
+        System.out.println( /*Aqui iria la hora */);
+        
     }
-    
-   public void engadirMeGusta (perfil){
+    //metodo para añadir me gusta a una publicacion 
+   public void engadirMeGusta (Perfil perfil){
+       int contador=0;
        
-       
-       
+       System.out.println("Hay " + contador + "me gusta"); 
    }
     
     

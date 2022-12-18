@@ -141,9 +141,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                                 break;
                             default:
                                 break;
-
                         }
-
                     }
                     System.out.println("No es un nombre valido");
                 }

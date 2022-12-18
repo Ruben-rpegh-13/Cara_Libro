@@ -75,8 +75,9 @@ class Perfil {
     }
             //Este metodo sirve para una añadir un perfil a tu lista de amigos
       public Perfil engadirAmigo (Perfil amigo){
-          
-          
+         
+          //listaAmigos.get(amigo).add(this);
+       
         return null;
           
           

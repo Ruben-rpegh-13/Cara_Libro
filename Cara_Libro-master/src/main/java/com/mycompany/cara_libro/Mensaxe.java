@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author a21rubenpe
+ * @author VictorLandin & Ruben-rpegh-13
  */
 public class Mensaxe {
 
