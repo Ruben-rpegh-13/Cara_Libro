@@ -126,15 +126,18 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                         System.out.println("Quiere añadir a esta persona?");
                         String opciones;
                         opciones = lector.nextLine();
-                         System.out.println( "SI" + '\n' 
+                         System.out.println( "Si" + '\n' 
                                            + "No" + '\n'
                                            + "Atrás");
                         switch (opciones) {
-                            case "S":
+                            case "Si":
+                                sesionActual.aceptarSolicitudeDeAmistad(sesionActual);
                                 break;
-                            case "N":
+                            case "No": 
+                                sesionActual.rexeitarSolicitudeDeAmistad(sesionActual);
                                 break;
                             case "A":
+                                menuAtras=true;
                                 break;
                             default:
                                 break;
