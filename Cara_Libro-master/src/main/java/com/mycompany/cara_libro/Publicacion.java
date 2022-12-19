@@ -27,6 +27,7 @@ public class Publicacion {
     
     //metodo para crear una publicacion dentro de un perfil
     public Publicacion(Perfil autor,String texto) {
+        
         texto =teclado.nextLine();
         System.out.println( /*Aqui iria la hora */);
         
