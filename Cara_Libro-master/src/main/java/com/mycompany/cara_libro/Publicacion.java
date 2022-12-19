@@ -10,33 +10,70 @@ import java.util.Scanner;
  *
  * @author VictorLandin & Ruben-rpegh-13
  */
-  
-   /* Commit - subir archivo
-      push   - llevar a cabo commit
-      pull refrescar proyecto
-    
-      Proyecto-commit-remote-push SUBIR ARCHIVO
-      Proyecto-commit-remote-pull BAJAR ARCHIVO
-    */
-            
-public class Publicacion {
-
-    public LocalDate data;
-    public String texto;
-    Scanner teclado = new Scanner(System.in);
-    
-    //metodo para crear una publicacion dentro de un perfil
-    public Publicacion(Perfil autor,String texto) {
-        
-        texto =teclado.nextLine();
-        System.out.println( /*Aqui iria la hora */);
-        
-    }
-    //metodo para añadir me gusta a una publicacion 
-   public void engadirMeGusta (Perfil perfil){
-       int contador=0;
-       
-       System.out.println("Hay " + contador + "me gusta"); 
+  public class Publicacion {
+	
+	public LocalDate data;
+	public String texto;
+	public int meGusta;
+	public String comentario;
+	public boolean lido;
+	Scanner teclado = new Scanner(System.in);
+	
+	//Permite publicar unha publicacion e muestra a hora da publicacion
+	public Publicacion(String texto){
+		
+		texto =teclado.nextLine();
+		mostrarTexto();
+		mostrarmeGusta();
+		mostrarComentarios();
+		mostrarData();
+		mostrarLido();
+	}
+	
+	//Permite dar like a una publicacion
+	public void darLike(){
+		
+		meGusta++;
+	}
+	
+	//Permite ver cuanto comentarios tiene una publicacion
+	public void comentar(){
+		
+		comentario++;
+	}
+	
+	//Permite mostrar el numero de meGusta de una publicacion
+	public void mostrarmeGusta(){
+		
+		System.out.println("meGusta: "+meGusta);
+	}
+	
+	//Permite mostrar el numero de comentarios de una publicacion
+	public void mostrarComentarios(){
+		
+		System.out.println("Comentarios: "+comentario);
+	}
+	
+	//Permite mostrar el texto de una publicacion
+	public void mostrarTexto(){
+		
+		System.out.println(texto);
+	}
+	
+	//Permite mostrar la fecha de una publicacion
+	public void mostrarData(){
+		
+		System.out.println(data);
+	}
+	
+	//Permite mostrar si una publicacion ha sido leida o no
+	public void mostrarLido(){
+		
+		if (lido=true)
+			System.out.println(" ");
+			System.out.println(" ");
+			System.out.println("Lido");
+	} 
    }
     
     
