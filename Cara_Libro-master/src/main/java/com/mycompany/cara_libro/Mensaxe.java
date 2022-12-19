@@ -5,7 +5,6 @@
 package com.mycompany.cara_libro;
 
 import java.util.Date;
-import java.util.Scanner;
 
 /**
  *
@@ -13,23 +12,50 @@ import java.util.Scanner;
  */
 public class Mensaxe {
 
-    public Date data; 
+    public Date data;
     public String texto;
     public boolean lido;
-    
-    
-    public Mensaxe(String texto,Perfil perfil ) {
-        
-    Scanner teclado= new Scanner (System.in);     
-    texto=teclado.nextLine();
-    
-    
-    
-    if (lido=true)
-            System.out.println(" ");
-            System.out.println("Lido");
-        
-        
+    Perfil remitente;
+
+    public Mensaxe(String texto, Perfil remitente) {
+        this.texto = texto;
+        this.data = new Date();
+        this.lido = false;
     }
-    //Prueba hecha por victor
+
+    //Getter y Setter
+    
+    public Perfil getRemitente() {
+        return remitente;
+    }
+
+    public void setRemitente(Perfil remitente) {
+        this.remitente = remitente;
+    }
+
+    public boolean isLido() {
+        return lido;
+    }
+
+    public void setLido(boolean lido) {
+        this.lido = lido;
+    }
+
+    public Date getData() {
+        return data;
+    }  
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    
 }

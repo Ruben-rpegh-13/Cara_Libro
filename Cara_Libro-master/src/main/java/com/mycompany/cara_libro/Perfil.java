@@ -18,9 +18,18 @@ class Perfil {
     public String estado;
     private ArrayList<Perfil> amigos;
     private ArrayList<String> solicitud;
+    private ArrayList<Mensaxe> mensaxes;
 
     //Getter  y Setter 
     
+    public ArrayList<Mensaxe> getMensaxes() {
+        return mensaxes;
+    }
+
+    public void setMensaxes(ArrayList<Mensaxe> mensaxes) {
+        this.mensaxes = mensaxes;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -61,13 +70,13 @@ class Perfil {
         this.solicitud = solicitud;
     }
 
-    
+    //Constructor    
     
     Perfil(String nombre, String contraseña) {
         
         this.nombre = nombre;
         this.contraseña = contraseña;
-        this.estado = estado;
+        this.estado = null;
         this.amigos = new ArrayList<Perfil>();
         this.solicitud = new ArrayList <String>();
         
@@ -95,4 +104,13 @@ class Perfil {
         solicitud.remove(perfilAmigo.getNombre());
     }
     
+    //añade una nueva mensaxe a la lista de mensaxes
+    public void engadirMensaxePrivada(Mensaxe mensaxe) {
+        mensaxes.add(mensaxe);
+    }
+
+    //elimina una mensaxe de la lista de mensaxes
+    public void eliminarMensaxe(Mensaxe mensaxe) {
+        mensaxes.remove(mensaxe);
+    }
 }

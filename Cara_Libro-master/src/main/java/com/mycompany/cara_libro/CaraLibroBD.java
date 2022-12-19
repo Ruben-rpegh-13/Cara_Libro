@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 class CaraLibroBD {
 
-    private static ArrayList <Perfil> datos = new ArrayList();
+    public static ArrayList <Perfil> datos = new ArrayList();
     public CaraLibroBD() {
     }
     
