@@ -19,8 +19,17 @@ class Perfil {
     private ArrayList<Perfil> amigos;
     private ArrayList<String> solicitud;
     private ArrayList<Mensaxe> mensaxes = new ArrayList<Mensaxe>();
+    private ArrayList<Publicacion> publicaciones = new ArrayList<Publicacion>();
 
     //Getter  y Setter 
+    
+    public ArrayList<Publicacion> getPublicaciones() {
+        return publicaciones;
+    }
+
+    public void setPublicaciones(ArrayList<Publicacion> publicaciones) {
+        this.publicaciones = publicaciones;
+    }
     
     public ArrayList<Mensaxe> getMensaxes() {
         return mensaxes;
@@ -112,5 +121,9 @@ class Perfil {
     //elimina una mensaxe de la lista de mensaxes
     public void eliminarMensaxe(Mensaxe mensaxe) {
         mensaxes.remove(mensaxe);
+    }
+
+    public void engadirPublicacion(String publicacion) {
+        publicaciones.add(new Publicacion(publicacion));
     }
 }

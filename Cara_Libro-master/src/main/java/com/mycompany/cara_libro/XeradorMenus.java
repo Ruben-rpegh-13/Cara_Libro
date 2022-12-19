@@ -1,5 +1,7 @@
 package com.mycompany.cara_libro;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -60,7 +62,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
             // pongo \n para saltar de linea
             System.out.println("Usuario: " + sesionActual.getNombre() + '\n'
                     + "1: Estado" + '\n'
-                    + "2: Biografia(no implementado)" + '\n'
+                    + "2: Biografia" + '\n'
                     + "3: Lista de amigos: "
                     // en esta linea de abajo se muestra el numero de amigos y solicitudes
                     // pendientes, pero como no hay \n no salta de linea
@@ -75,7 +77,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     cambiarEstado(sesionActual);
                     break;
                 case "2":
-                    // mostrarBiografia(sesionActual);
+                    mostrarBiografia(sesionActual);
                     break;
                 case "3":
                     mostrarListaAmigos(sesionActual);
@@ -96,8 +98,41 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
 
     // enseña tanto el estado escrito por la persona como la lista de publicaciones
     public void mostrarBiografia(Perfil sesionActual) {
+        boolean menuAtras = false;
         String opciones;
+        do {
+            System.out.println("Estado: " + sesionActual.getEstado() + '\n'
+                    + "Publicaciones: " + '\n');
+            // enseña las publicaciones
+            for (int contPublicacion = 0; contPublicacion < sesionActual.getPublicaciones().size(); contPublicacion++) {
+                System.out.println(sesionActual.getPublicaciones().get(contPublicacion));
+            }
+            System.out.println(("1: Publicar" + '\n'
+                    + "0: Atras"););        
+            opciones = lector.nextLine();
 
+            switch (opciones) {
+                case "1":
+                    publicar(sesionActual);
+                    break;
+                case "0":
+                    menuAtras = true;
+                    break;
+                default:
+                    break;
+            }
+            limpiarPantalla();
+        } while (!menuAtras);
+
+    }
+
+    private void publicar(Perfil sesionActual) { // añade una publicacion a la biografia
+        String publicacion;
+        System.out.println("Escriba su publicacion o pulse enter para volver");
+        publicacion = lector.nextLine();
+        if (!publicacion.isEmpty()) { // si no esta vacio, añade la publicacion
+            sesionActual.engadirPublicacion(publicacion);
+        }
     }
 
     // muestra las solicitudes y te deja aceptarlas
@@ -201,10 +236,10 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
 
     public void mostrarMensajes(Perfil sesionActual) { // muestra los mensajes de los amigos, este metodo es muy largo,
                                                        // por eso esta comentado en varias partes
-                                                       //
         limpiarPantalla();
         boolean menuAtras = false;
         int numMensaxes;
+        int numMensaxesSinLeer;
         Perfil amigo;
         do {// chequea si hay mensajes y cuantos hay
             System.out.println("Usuario: " + sesionActual.getNombre());
@@ -213,22 +248,33 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                                                                                                    // de amigos
                 amigo = sesionActual.getAmigos().get(contAmigos);
                 numMensaxes = 0;
+                numMensaxesSinLeer = 0;
                 for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) {
                     if (amigo.getMensaxes().get(contMensajes).getRemitente() == sesionActual) {
-                        numMensaxes++; // guarda el numero de mensajes de la sesion actual
+                        numMensaxes++; // guarda el numero de mensajes de la sesion actual, añadiendo los mensajes que
+                                       // el usuario ha enviado
+                    }
+                }
+                for (int contMensajes = 0; contMensajes < sesionActual.getMensaxes().size(); contMensajes++) {
+                    if (sesionActual.getMensaxes().get(contMensajes).getRemitente() == amigo) {
+                        numMensaxes++; // guarda el numero de mensajes de la sesion actual, añadiendo los mensajes que
+                                       // el usuario ha recibido
                     }
                 }
                 if (numMensaxes == 0) { // si no hay mensajes
-                    System.out.println("Tu amigo " + amigo.getNombre() + " y tu no teneis chat");
+                    System.out.println("Tu amigo [" + amigo.getNombre() + "] y tu no teneis chat");
                 } else { // si hay mensajes
                     for (int contNoLeidos = 0; contNoLeidos < amigo.getMensaxes().size(); contNoLeidos++) {
-                        if (amigo.getMensaxes().get(contNoLeidos).getRemitente() == sesionActual) {
-                            if (!amigo.getMensaxes().get(contNoLeidos).isLido()) {
-                                System.out.println(
-                                        "Tiene " + numMensaxes + " mensajes no leidos de " + amigo.getNombre());
+                        if (!sesionActual.getMensaxes().isEmpty()) {
+                            if (sesionActual.getMensaxes().get(contNoLeidos).getRemitente() == amigo) {
+                                if (!sesionActual.getMensaxes().get(contNoLeidos).isLido()) {
+                                    numMensaxesSinLeer++; // guarda el numero de mensajes sin leer
+                                }
                             }
                         }
                     }
+                    System.out.println("Tiene " + numMensaxes + " mensajes en el chat con [" + amigo.getNombre()
+                            + "] de los cuales tienes: " + numMensaxesSinLeer + " sin leer");
                 }
             }
             System.out.println(
@@ -244,13 +290,15 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     do {
                         System.out.println("Escriba 1 para enviar mensaje o 0 para volver al menu anterior");
                         String volver = lector.nextLine();
-                        if (volver.equals("0")) {
-                            menuAtras = true;
-                        } else if (volver.equals("1")) {
-                            System.out.println("No es un nombre valido");
-                            escribirMensaje(sesionActual, amigo);
-                        } else {
-                            System.out.println("No es una opcion valida");
+                        switch (volver) {
+                            case "1":
+                                escribirMensaje(sesionActual, amigo);
+                                break;
+                            case "0":
+                                menuAtras = true;
+                                break;
+                            default:
+                                break;
                         }
                     } while (!menuAtras);
 
@@ -263,39 +311,94 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
 
     private Perfil chat(String nombreAmigo, Perfil sesionActual) { // muestra los mensajes de un amigo a ti y tuyos a
                                                                    // ese amigo
+        limpiarPantalla();
         Perfil amigo = null;
-        for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) {
-            if (sesionActual.getAmigos().get(contAmigos).getNombre().equals(nombreAmigo)) {
-                amigo = sesionActual.getAmigos().get(contAmigos);
-            }
-        }
-        if (amigo != null) {
-            for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) { // recorre la lista
-                                                                                                    // de
-                                                                                                    // mensajes del
-                                                                                                    // amigo
-                if (amigo.getMensaxes().get(contMensajes).getRemitente() == sesionActual) {
-                    System.out.println(amigo.getMensaxes().get(contMensajes).getRemitente().getNombre() + ": "
-                            + amigo.getMensaxes().get(contMensajes).getTexto());
-                    System.out.println("--------------------------------------------------");
-                    marcarMesaxeComoLido(amigo.getMensaxes().get(contMensajes));
+        boolean menuAtras = false;
+        do {
+            int idMensaje = 0;
+            ArrayList<Mensaxe> chatTemp = new ArrayList<Mensaxe>();
+            for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) {
+                if (sesionActual.getAmigos().get(contAmigos).getNombre().equals(nombreAmigo)) {
+                    amigo = sesionActual.getAmigos().get(contAmigos);
                 }
             }
-            for (int contMensajes = 0; contMensajes < sesionActual.getMensaxes().size(); contMensajes++) { // recorre la
-                                                                                                           // lista de
-                                                                                                           // mensajes
-                                                                                                           // de
-                                                                                                           // la sesion
-                                                                                                           // actual
-                if (sesionActual.getMensaxes().get(contMensajes).getRemitente() == amigo) {
-                    System.out.println(sesionActual.getMensaxes().get(contMensajes).getRemitente().getNombre() + ": "
-                            + sesionActual.getMensaxes().get(contMensajes).getTexto());
-                    System.out.println("--------------------------------------------------");
-                    marcarMesaxeComoLido(sesionActual.getMensaxes().get(contMensajes));
+            if (amigo != null) {
+                for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) { // recorre la
+                                                                                                        // lista
+                                                                                                        // de
+                                                                                                        // mensajes del
+                                                                                                        // amigo
+                    if (amigo.getMensaxes().get(contMensajes).getRemitente() == sesionActual) {
+                        chatTemp.add(amigo.getMensaxes().get(contMensajes));
+                    }
+                }
+                for (int contMensajes = 0; contMensajes < sesionActual.getMensaxes().size(); contMensajes++) { // recorre
+                                                                                                               // la
+                                                                                                               // lista
+                                                                                                               // de
+                                                                                                               // mensajes
+                                                                                                               // de
+                                                                                                               // la
+                                                                                                               // sesion
+                                                                                                               // actual
+                    if (sesionActual.getMensaxes().get(contMensajes).getRemitente() == amigo) {
+                        chatTemp.add(sesionActual.getMensaxes().get(contMensajes));
+                    }
+                }
+
+                if (chatTemp.isEmpty()) {
+                    System.out.println("Tu amigo [" + amigo.getNombre() + "] y tu no teneis chat");
+                } else {
+                    Collections.sort(chatTemp, (o1, o2) -> o1.getData().compareTo(o2.getData())); // ordena los mensajes
+                                                                                                  // por fecha tuve que
+                                                                                                  // buscar en internet
+
+                    for (int contMensajes = 0; contMensajes < chatTemp.size(); contMensajes++) { // muestra los mensajes
+                        idMensaje++;
+                        if (chatTemp.get(contMensajes).getRemitente() == sesionActual) {
+                            System.out.println("Tu: " + chatTemp.get(contMensajes).getTexto());
+                            System.out.println(chatTemp.get(contMensajes).getData());
+                            System.out.println("ID: " + idMensaje);
+                        } else {
+                            System.out.println(amigo.getNombre() + ": " + chatTemp.get(contMensajes).getTexto());
+                            System.out.println(chatTemp.get(contMensajes).getData());
+                            System.out.println("ID: " + idMensaje);
+                            if (!chatTemp.get(contMensajes).isLido()) { // si el mensaje no esta leido lo marca como
+                                                                        // leido
+                                marcarMesaxeComoLido(chatTemp.get(contMensajes));
+                            }
+                        }
+
+                    }
+
+                    System.out.println("Desea borrar un mensaje? (s/n)");
+                    String borrar = lector.nextLine();
+                    if (borrar.equals("s")) {
+                        System.out.println("Escriba el ID del mensaje que desea borrar");
+                        int id = lector.nextInt();
+                        if (id > 0 && id <= chatTemp.size()) {
+                            if (chatTemp.get(id - 1).getRemitente() == sesionActual) {
+                                eliminarMensaje(amigo, chatTemp.get(id - 1));
+                            } else {
+                                System.out.println("No puedes borrar mensajes de tu amigo");
+                            }
+                        } else {
+                            System.out.println("No es un ID valido");
+                        }
+                    }
+                    System.out.println("Desea volver al menu anterior? (s/n)");
+                    String volver = lector.nextLine();
+                    if (volver.equals("s")) {
+                        menuAtras = true;
+                    }
                 }
             }
-        }
+        } while (!menuAtras);
         return amigo;
+    }
+
+    private void eliminarMensaje(Perfil amigo, Mensaxe mensaje) {
+        amigo.eliminarMensaxe(mensaje);
     }
 
     private void marcarMesaxeComoLido(Mensaxe mensaxe) { // marca el mensaje como leido
@@ -313,7 +416,8 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
             if (texto.equals("0")) {
                 menuAtras = true;
             } else {
-                destinatario.getMensaxes().add(new Mensaxe(texto, remitente));
+                Mensaxe mensaxe = new Mensaxe(texto, remitente);
+                destinatario.engadirMensaxePrivada(mensaxe);
             }
             limpiarPantalla();
         } while (!menuAtras);
@@ -566,6 +670,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
             switch (comando) {
                 case "salir":
                     System.out.println("Saliendo...");
+                    System.out.println("Presiona enter para continuar");
                     break;
                 case "ayuda": // Este comando muestra los comandos disponibles
                     System.out.println("Comandos disponibles(no usar varios a la vez): " + '\n' +
@@ -575,6 +680,8 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                             "amigos: crea varios perfiles ya amigos" + '\n' +
                             "admin: muestra los perfiles con su contraseña, solicitudes y amigos" + '\n' +
                             "ayuda: muestra los comandos disponibles");
+                    System.out.println(" ");
+                    System.out.println("Presiona enter para continuar");
 
                     break;
                 case "perfiles": // Este comando crea varios perfiles
@@ -631,13 +738,15 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     break;
                 case "admin":
                     admin();
+                    System.out.println("Presiona enter para continuar");
                     System.out.println(" ");
                     break;
                 default:
                     System.out.println("Comando no reconocido");
+                    System.out.println("Presiona enter para continuar");
                     break;
             }
-            System.out.println("Presiona enter para continuar");
+
             lector.nextLine();
 
         } while (!comando.equals("salir"));
