@@ -219,7 +219,7 @@ public class XeradorMenus { //muchas cosas estan comentadas debido a probar dist
                 }
             }
             limpiarPantalla();
-        } while (!correcto && !atras); //servirta para cuando haya que hacer la opcion de poner la contraseña dos veces
+        } while (!correcto && !atras); //serviria para cuando haya que hacer la opcion de poner la contraseña dos veces
     }
     //Entrarias a la sesion de ese perfil
 
