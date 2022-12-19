@@ -18,9 +18,7 @@ public class Comentario {
     Scanner teclado = new Scanner(System.in);
     
     //Permite comentar una publicacion y muestra la hora del comentario
-    public Comentario(String texto){
-        
-        
+    public Comentario(String texto){        
         texto =teclado.nextLine();
         System.out.println(/*Aqui iria la hora */); 
     }
