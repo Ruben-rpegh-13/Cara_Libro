@@ -75,12 +75,10 @@ class Perfil {
     }
             //Este metodo sirve para una añadir un perfil a tu lista de amigos
       public Perfil engadirAmigo (Perfil amigo){
-         
-          //listaAmigos.get(amigo).add(this);
+
+        amigos.add(amigo);
        
         return null;
-          
-          
       }
              //añade tu nombre a la lista de solicitudes de la otra persona
     public void engadirSolicitudeDeAmistad(Perfil perfilAmigo) {
@@ -88,8 +86,8 @@ class Perfil {
     }
             //acepta la solicitud, se añade como amigo en ambos perfiles y luego  elimina  la solicitud
     public void aceptarSolicitudeDeAmistad(Perfil perfilAmigo) { 
-        amigos.add(perfilAmigo);
-        CaraLibroBD.buscarPerfil(perfilAmigo.getNombre()).amigos.add(this);
+        this.engadirAmigo(perfilAmigo);
+        perfilAmigo.engadirAmigo(this);
         solicitud.remove(perfilAmigo.getNombre());
     }
             //elimina la solicitud de la lista de pendientes
