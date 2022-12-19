@@ -66,7 +66,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     // pendientes, pero como no hay \n no salta de linea
                     + sesionActual.getAmigos().size() + " amigos, " + sesionActual.getSolicitud().size()
                     + " solicitudes pendientes" + '\n'
-                    + "4: mensajes directos" + '\n'
+                    + "4: Mensajes directos" + '\n'
                     + "0: Cerrar Sesion");
             opciones = lector.nextLine();
 
@@ -199,32 +199,33 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
 
     }
 
-    public void mostrarMensajes(Perfil sesionActual) { // muestra los mensajes de los amigos, este metodo es muy largo, por eso esta comentado en varias partes
+    public void mostrarMensajes(Perfil sesionActual) { // muestra los mensajes de los amigos, este metodo es muy largo,
+                                                       // por eso esta comentado en varias partes
+                                                       //
+        limpiarPantalla();
         boolean menuAtras = false;
         int numMensaxes;
         Perfil amigo;
         do {// chequea si hay mensajes y cuantos hay
-
-            for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) {  // recorre la lista de amigos
+            System.out.println("Usuario: " + sesionActual.getNombre());
+            System.out.println("Mensajes: ");
+            for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) { // recorre la lista
+                                                                                                   // de amigos
                 amigo = sesionActual.getAmigos().get(contAmigos);
                 numMensaxes = 0;
-                if (amigo.getMensaxes().isEmpty()) {    // si no hay mensajes
-                    System.out.println(amigo.getNombre() + " no tiene mensajes");
-                } else {    // si hay mensajes cuenta cuantos son de la sesion actual
-                    for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) {
-                        if (amigo.getMensaxes().get(contMensajes).getRemitente().equals(sesionActual)) {
-                            numMensaxes++;  // guarda el numero de mensajes de la sesion actual
-                        }
+                for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) {
+                    if (amigo.getMensaxes().get(contMensajes).getRemitente() == sesionActual) {
+                        numMensaxes++; // guarda el numero de mensajes de la sesion actual
                     }
-                    if (numMensaxes == 0) { // si no hay mensajes
-                        System.out.println(amigo.getNombre() + " no tiene mensajes");
-                    } else {    // si hay mensajes
-                        for (int contNoLeidos = 0; contNoLeidos < amigo.getMensaxes().size(); contNoLeidos++) {
-                            if (amigo.getMensaxes().get(contNoLeidos).getRemitente().equals(sesionActual)) {
-                                if (!amigo.getMensaxes().get(contNoLeidos).isLido()) {
-                                    System.out.println(
-                                            amigo.getNombre() + " tiene " + numMensaxes + " mensajes no leidos");
-                                }
+                }
+                if (numMensaxes == 0) { // si no hay mensajes
+                    System.out.println("Tu amigo " + amigo.getNombre() + " y tu no teneis chat");
+                } else { // si hay mensajes
+                    for (int contNoLeidos = 0; contNoLeidos < amigo.getMensaxes().size(); contNoLeidos++) {
+                        if (amigo.getMensaxes().get(contNoLeidos).getRemitente() == sesionActual) {
+                            if (!amigo.getMensaxes().get(contNoLeidos).isLido()) {
+                                System.out.println(
+                                        "Tiene " + numMensaxes + " mensajes no leidos de " + amigo.getNombre());
                             }
                         }
                     }
@@ -235,41 +236,66 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
             String nombreAmigo = lector.nextLine();
             if (nombreAmigo.equals("0")) { // si es 0 vuelve al menu anterior
                 menuAtras = true;
-            } else { 
-                amigo = null; 
-                for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) { 
-                    if (sesionActual.getAmigos().get(contAmigos).getNombre().equals(nombreAmigo)) { 
-                        amigo = sesionActual.getAmigos().get(contAmigos); 
-                        for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) { 
-                            if (amigo.getMensaxes().get(contMensajes).getRemitente().equals(sesionActual)) { 
-                                System.out.println(amigo.getMensaxes().get(contMensajes).getRemitente().getNombre() 
-                                        + ": " + amigo.getMensaxes().get(contMensajes).getTexto()); 
-                                marcarMesaxeComoLido(amigo.getMensaxes().get(contMensajes));
-                            }
-                        } 
-                    }
-                }
+            } else {
+                amigo = chat(nombreAmigo, sesionActual); // si no es 0 llama al metodo chat
                 if (amigo == null) {
                     System.out.println("No es un nombre valido");
                 } else {
                     do {
                         System.out.println("Escriba 1 para enviar mensaje o 0 para volver al menu anterior");
-                    String volver = lector.nextLine();
-                    if (volver.equals("0")) {
-                        menuAtras = true;
-                    } else if (volver.equals("1")) {
-                        escribirMensaje(sesionActual, amigo);
-                    } else {
-                        System.out.println("No es una opcion valida");
-                    }
+                        String volver = lector.nextLine();
+                        if (volver.equals("0")) {
+                            menuAtras = true;
+                        } else if (volver.equals("1")) {
+                            System.out.println("No es un nombre valido");
+                            escribirMensaje(sesionActual, amigo);
+                        } else {
+                            System.out.println("No es una opcion valida");
+                        }
                     } while (!menuAtras);
-                    
-                    
+
                 }
             }
             limpiarPantalla();
         } while (!menuAtras);
 
+    }
+
+    private Perfil chat(String nombreAmigo, Perfil sesionActual) { // muestra los mensajes de un amigo a ti y tuyos a
+                                                                   // ese amigo
+        Perfil amigo = null;
+        for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) {
+            if (sesionActual.getAmigos().get(contAmigos).getNombre().equals(nombreAmigo)) {
+                amigo = sesionActual.getAmigos().get(contAmigos);
+            }
+        }
+        if (amigo != null) {
+            for (int contMensajes = 0; contMensajes < amigo.getMensaxes().size(); contMensajes++) { // recorre la lista
+                                                                                                    // de
+                                                                                                    // mensajes del
+                                                                                                    // amigo
+                if (amigo.getMensaxes().get(contMensajes).getRemitente() == sesionActual) {
+                    System.out.println(amigo.getMensaxes().get(contMensajes).getRemitente().getNombre() + ": "
+                            + amigo.getMensaxes().get(contMensajes).getTexto());
+                    System.out.println("--------------------------------------------------");
+                    marcarMesaxeComoLido(amigo.getMensaxes().get(contMensajes));
+                }
+            }
+            for (int contMensajes = 0; contMensajes < sesionActual.getMensaxes().size(); contMensajes++) { // recorre la
+                                                                                                           // lista de
+                                                                                                           // mensajes
+                                                                                                           // de
+                                                                                                           // la sesion
+                                                                                                           // actual
+                if (sesionActual.getMensaxes().get(contMensajes).getRemitente() == amigo) {
+                    System.out.println(sesionActual.getMensaxes().get(contMensajes).getRemitente().getNombre() + ": "
+                            + sesionActual.getMensaxes().get(contMensajes).getTexto());
+                    System.out.println("--------------------------------------------------");
+                    marcarMesaxeComoLido(sesionActual.getMensaxes().get(contMensajes));
+                }
+            }
+        }
+        return amigo;
     }
 
     private void marcarMesaxeComoLido(Mensaxe mensaxe) { // marca el mensaje como leido
@@ -280,14 +306,16 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
         boolean menuAtras = false;
         String texto;
         do {
-            System.out.println("Escriba el texto del mensaje o 0 para volver al menu anterior");
+            System.out.println("Usuario: " + remitente.getNombre());
+            System.out.println("Escriba el texto del mensaje para " + destinatario.getNombre()
+                    + " o 0 para volver al menu anterior");
             texto = lector.nextLine();
             if (texto.equals("0")) {
                 menuAtras = true;
             } else {
-                Mensaxe mensaxe = new Mensaxe(texto, remitente);
-                destinatario.getMensaxes().add(mensaxe);
+                destinatario.getMensaxes().add(new Mensaxe(texto, remitente));
             }
+            limpiarPantalla();
         } while (!menuAtras);
     }
 
@@ -295,7 +323,6 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
         sesionActual = null;
     }
 
-    
     private void crearPerfil() { // crea un perfil
 
         boolean atras = false;
@@ -326,7 +353,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                                        // veces
     }
 
-    private void iniciarSesion() {  // inicia sesion
+    private void iniciarSesion() { // inicia sesion
 
         boolean atras = false;
         boolean correcto = false;
@@ -378,13 +405,14 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
         }
     }
 
-    // muesta tus amigos y sus estados o te redirije a enviar solicitud, este metodo es muy largo y por eso esta comentado en varias partes
+    // muesta tus amigos y sus estados o te redirije a enviar solicitud, este metodo
+    // es muy largo y por eso esta comentado en varias partes
     private void listaAmigos(Perfil sesionActual) {
         boolean menuAtras = false;
         String opciones;
 
         do {
-            if (sesionActual.getAmigos().isEmpty()) {   // si no tienes amigos te da la opcion de añadir uno
+            if (sesionActual.getAmigos().isEmpty()) { // si no tienes amigos te da la opcion de añadir uno
                 System.out.println("Parece que aun no tienes amigos, quieres añadir uno?" + '\n'
                         + "1: Añadir amigo" + '\n'
                         + "0: Atras");
@@ -399,7 +427,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     default:
                         break;
                 }
-            } else {    // si tienes amigos te muestra la lista de amigos y sus estados
+            } else { // si tienes amigos te muestra la lista de amigos y sus estados
                 for (int contAmigos = 0; contAmigos < sesionActual.getAmigos().size(); contAmigos++) {
                     System.out.println(sesionActual.getAmigos().get(contAmigos).getNombre());
                     if (sesionActual.getAmigos().get(contAmigos).getEstado() == null) {
@@ -413,9 +441,9 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
             System.out.println("Escriba el nombre del amigo que desea ver o 0 para volver al menu anterior");
             // Te muestra el perfil seleccionado
             String nombreSolicitud = lector.nextLine();
-            if (nombreSolicitud.equals("0")) {  // si es 0 te redirije al menu anterior
+            if (nombreSolicitud.equals("0")) { // si es 0 te redirije al menu anterior
                 menuAtras = true;
-            } else {    // si no es 0 te muestra el perfil seleccionado
+            } else { // si no es 0 te muestra el perfil seleccionado
                 for (int contAmigos = 0; contAmigos < sesionActual.getSolicitud().size(); contAmigos++) {
                     Perfil perfilAmigo = CaraLibroBD.buscarPerfil(nombreSolicitud);
                     if (sesionActual.getAmigos().get(contAmigos).equals(perfilAmigo)) {
@@ -436,7 +464,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                             default:
                                 break;
                         }
-                    } else {   
+                    } else {
                         System.out.println("No es un nombre valido, o aun no es tu amigo");
                     }
                 }
@@ -498,7 +526,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
         }
     }
 
-    private void ascii(int opcion) {    // este metodo es para poner ascii art en el menu
+    private void ascii(int opcion) { // este metodo es para poner ascii art en el menu
         switch (opcion) {
             case 1 ->
                 System.out.println("""
@@ -539,7 +567,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                 case "salir":
                     System.out.println("Saliendo...");
                     break;
-                case "ayuda":   // Este comando muestra los comandos disponibles
+                case "ayuda": // Este comando muestra los comandos disponibles
                     System.out.println("Comandos disponibles(no usar varios a la vez): " + '\n' +
                             "salir: cierra la consola" + '\n' +
                             "perfiles: crea varios perfiles" + '\n' +
@@ -549,7 +577,7 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                             "ayuda: muestra los comandos disponibles");
 
                     break;
-                case "perfiles":    // Este comando crea varios perfiles
+                case "perfiles": // Este comando crea varios perfiles
                     System.out.println("Introduce el numero de perfiles a crear");
                     int numero = lector.nextInt();
                     for (int i = 0; i < numero; i++) {
@@ -578,12 +606,13 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     }
                     System.out.println(" ");
                     break;
-                case "amigos":  // Este comando crea varios perfiles ya amigos
+                case "amigos": // Este comando crea varios perfiles ya amigos
                     System.out.println("Introduce el numero de perfiles a crear");
                     int numero3 = lector.nextInt();
                     for (int i = 0; i < numero3; i++) {
                         String nombre = "usuario" + i;
-                        String contraseña = "llave" + i; //llave en vez de contraseña por problemas que no he podido solucionar
+                        String contraseña = "llave" + i; // llave en vez de contraseña por problemas que no he podido
+                                                         // solucionar
                         Perfil perfil = new Perfil(nombre, contraseña);
                         CaraLibroBD.engadirPerfil(perfil);
                     }
@@ -600,11 +629,11 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     }
                     System.out.println(" ");
                     break;
-                case "admin":  
+                case "admin":
                     admin();
                     System.out.println(" ");
                     break;
-                default:    
+                default:
                     System.out.println("Comando no reconocido");
                     break;
             }
@@ -614,7 +643,8 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
         } while (!comando.equals("salir"));
     }
 
-    public void admin() {   // Este metodo es para debuggear, muestra los perfiles con su contraseña, solicitudes y amigos
+    public void admin() { // Este metodo es para debuggear, muestra los perfiles con su contraseña,
+                          // solicitudes y amigos
         for (Perfil perfil : CaraLibroBD.datos) {
             System.out.println("Nombre: " + perfil.getNombre());
             System.out.println("Contraseña: " + perfil.getContraseña());
