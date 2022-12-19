@@ -18,7 +18,7 @@ class Perfil {
     public String estado;
     private ArrayList<Perfil> amigos;
     private ArrayList<String> solicitud;
-    private ArrayList<Mensaxe> mensaxes;
+    private ArrayList<Mensaxe> mensaxes = new ArrayList<Mensaxe>();
 
     //Getter  y Setter 
     
