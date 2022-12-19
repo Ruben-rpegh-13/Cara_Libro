@@ -21,10 +21,11 @@ public class Mensaxe {
         this.texto = texto;
         this.data = new Date();
         this.lido = false;
+        this.remitente = remitente;
     }
 
     //Getter y Setter
-    
+
     public Perfil getRemitente() {
         return remitente;
     }
