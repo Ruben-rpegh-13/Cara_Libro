@@ -97,23 +97,59 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
     }
 
     // enseña tanto el estado escrito por la persona como la lista de publicaciones
-    public void mostrarBiografia(Perfil sesionActual) {
+    public void mostrarBiografia(Perfil perfilBio) {
         boolean menuAtras = false;
         String opciones;
+        int eleccion;
+        int idPublicacion = 0;
         do {
-            System.out.println("Estado: " + sesionActual.getEstado() + '\n'
+            System.out.println("Estado: " + perfilBio.getEstado() + '\n'
                     + "Publicaciones: " + '\n');
             // enseña las publicaciones
-            for (int contPublicacion = 0; contPublicacion < sesionActual.getPublicaciones().size(); contPublicacion++) {
-                System.out.println(sesionActual.getPublicaciones().get(contPublicacion));
+            for (int contPublicacion = 0; contPublicacion < perfilBio.getPublicaciones().size(); contPublicacion++) {
+                idPublicacion++;
+                System.out.println("ID" + idPublicacion);
+                perfilBio.getPublicaciones().get(contPublicacion).mostrar();
             }
-            System.out.println(("1: Publicar" + '\n'
-                    + "0: Atras"););        
+            System.out.println("1: Publicar" + '\n'
+                    + "2: Elegir publicación" + '\n'
+                    + "0: Atras");
             opciones = lector.nextLine();
 
             switch (opciones) {
                 case "1":
-                    publicar(sesionActual);
+                    publicar(perfilBio);
+                    break;
+                case "2":
+                    System.out.println("Elija una publicacion");
+                    eleccion = lector.nextInt();
+                    if (eleccion > 0 && eleccion <= perfilBio.getPublicaciones().size()) {
+                        // enseña la publicacion elegida
+                        System.out.println(perfilBio.getPublicaciones().get(eleccion - 1));
+                        System.out.println("1: Comentar" + '\n'
+                                + "2: Like" + '\n'
+                                + "0: Atras");
+                        String opciones2 = lector.nextLine();
+                        switch (opciones2) { // aqui se elige que hacer con la publicacion, perdon por meter un switch dentro de otro
+                            case "1":
+                                escribirComentario(perfilBio.getPublicaciones().get(eleccion - 1), sesionActual);
+                                break;
+                            case "2":
+                            perfilBio.getPublicaciones().get(eleccion - 1).darLike(sesionActual);
+                                if (perfilBio.getPublicaciones().get(eleccion - 1).getPerfilLike().contains(sesionActual)) {
+                                    System.out.println("Le has dado like a esta publicacion");
+                                } else {
+                                    System.out.println("Ya no le das like a esta publicacion");
+                                }
+                                break;
+                            case "0":
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        System.out.println("Esa publicacion no existe");
+                    }
                     break;
                 case "0":
                     menuAtras = true;
@@ -126,12 +162,23 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
 
     }
 
-    private void publicar(Perfil sesionActual) { // añade una publicacion a la biografia
+    private void escribirComentario(Publicacion publicacion, Perfil sesionActual) {
+        String comentario;
+        System.out.println("Escriba su comentario o pulse enter para volver");
+        comentario = lector.nextLine();
+        if (!comentario.isEmpty()) { // si no esta vacio, añade el comentario
+            Comentario comentario1 = new Comentario(comentario);
+            comentario1.setAutor(sesionActual);
+            publicacion.engadirComentario(comentario1);
+        }
+    }
+
+    private void publicar(Perfil perfilBio) { // añade una publicacion a la biografia
         String publicacion;
         System.out.println("Escriba su publicacion o pulse enter para volver");
         publicacion = lector.nextLine();
         if (!publicacion.isEmpty()) { // si no esta vacio, añade la publicacion
-            sesionActual.engadirPublicacion(publicacion);
+            perfilBio.engadirPublicacion(sesionActual, publicacion);
         }
     }
 
@@ -555,12 +602,12 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                         System.out.println(" ");
                         System.out.println(" ");
                         System.out.println("Que desea hacer?");
-                        System.out.println("1: Biografia(no implementado)" + '\n'
+                        System.out.println("1: Biografia" + '\n'
                                 + "0: Atrás");
                         opciones = lector.nextLine();
                         switch (opciones) {
                             case "1":
-                                // mostrarBiografia(perfilAmigo);
+                                mostrarBiografia(perfilAmigo);
                                 break;
                             case "0":
                                 menuAtras = true;
@@ -678,6 +725,9 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                             "perfiles: crea varios perfiles" + '\n' +
                             "solicitudes: crea varios perfiles y manda solicitud de varios a uno" + '\n' +
                             "amigos: crea varios perfiles ya amigos" + '\n' +
+                            "mensajes: crea varios perfiles amigos y manda mensajes de varios a uno" + '\n' +
+                            "publicaciones: crea varios perfiles amigos y publicaciones" + '\n' +
+                            "comentarios: crea varios perfiles amigos, publicaciones y comentarios" + '\n' +
                             "admin: muestra los perfiles con su contraseña, solicitudes y amigos" + '\n' +
                             "ayuda: muestra los comandos disponibles");
                     System.out.println(" ");
@@ -736,6 +786,118 @@ public class XeradorMenus { // muchas cosas estan comentadas debido a probar dis
                     }
                     System.out.println(" ");
                     break;
+                case "mensajes": // Este comando crea varios perfiles amigos y manda mensajes de varios a uno
+                    System.out.println("Introduce el numero de perfiles a crear");
+                    int numero4 = lector.nextInt();
+                    for (int i = 0; i < numero4; i++) {
+                        String nombre = "usuario" + i;
+                        String contraseña = "llave" + i;
+                        Perfil perfil = new Perfil(nombre, contraseña);
+                        CaraLibroBD.engadirPerfil(perfil);
+                    }
+                    for (int i = 0; i < numero4; i++) {
+                        for (int j = 0; j < numero4; j++) {
+                            if (i != j) {
+                                String nombre = "usuario" + i;
+                                String nombre2 = "usuario" + j;
+                                Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                                Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                                perfil.engadirAmigo(perfil2);
+                            }
+                        }
+                    }
+                    for (int i = 0; i < numero4; i++) {
+                        for (int j = 0; j < numero4; j++) {
+                            if (i != j) {
+                                String nombre = "usuario" + i;
+                                String nombre2 = "usuario" + j;
+                                Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                                Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                                String texto = "Hola " + perfil.getNombre() +" soy "+perfil2.getNombre();
+                                Mensaxe mensaxe = new Mensaxe(texto, perfil);
+                                perfil2.engadirMensaxePrivada(mensaxe);
+                            }
+                        }
+                    }
+                
+                case "publicaciones": // Este comando crea varios perfiles con amigos y publicaciones
+                    System.out.println("Introduce el numero de perfiles a crear");
+                    int numero5 = lector.nextInt();
+                    for (int i = 0; i < numero5; i++) {
+                        String nombre = "usuario" + i;
+                        String contraseña = "llave" + i;
+                        Perfil perfil = new Perfil(nombre, contraseña);
+                        CaraLibroBD.engadirPerfil(perfil);
+                    }
+                    for (int i = 0; i < numero5; i++) {
+                        for (int j = 0; j < numero5; j++) {
+                            if (i != j) {
+                                String nombre = "usuario" + i;
+                                String nombre2 = "usuario" + j;
+                                Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                                Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                                perfil.engadirAmigo(perfil2);
+                            }
+                        }
+                    }
+                    for (int i = 0; i < numero5; i++) {
+                        String nombre = "usuario" + i;
+                        Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                        for (int j = 0; j < numero5; j++) {
+                            String nombre2 = "usuario" + j;
+                            Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                            String publicacion = "Hola " + perfil.getNombre() + " soy " + perfil2.getNombre();
+                            perfil.engadirPublicacion(perfil2, publicacion);
+                        }
+                    }
+                case "comentarios": // Este comando crea varios perfiles con amigos y publicaciones con comentarios
+                    System.out.println("Introduce el numero de perfiles a crear");
+                    int numero6 = lector.nextInt();
+                    for (int i = 0; i < numero6; i++) {
+                        String nombre = "usuario" + i;
+                        String contraseña = "llave" + i;
+                        Perfil perfil = new Perfil(nombre, contraseña);
+                        CaraLibroBD.engadirPerfil(perfil);
+                    }
+                    for (int i = 0; i < numero6; i++) {
+                        for (int j = 0; j < numero6; j++) {
+                            if (i != j) {
+                                String nombre = "usuario" + i;
+                                String nombre2 = "usuario" + j;
+                                Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                                Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                                perfil.engadirAmigo(perfil2);
+                            }
+                        }
+                    }
+                    for (int i = 0; i < numero6; i++) {
+                        String nombre = "usuario" + i;
+                        Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                        for (int j = 0; j < numero6; j++) {
+                            String nombre2 = "usuario" + j;
+                            Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                            String publicacion = "Hola " + perfil.getNombre() + " soy " + perfil2.getNombre();
+                            perfil.engadirPublicacion(perfil2, publicacion);
+                        }
+                    }
+                    for (int i = 0; i < numero6; i++) {
+                        String nombre = "usuario" + i;
+                        Perfil perfil = CaraLibroBD.buscarPerfil(nombre);
+                        for (int j = 0; j < numero6; j++) {
+                            String nombre2 = "usuario" + j;
+                            Perfil perfil2 = CaraLibroBD.buscarPerfil(nombre2);
+                            for (int k = 0; k < numero6; k++) {
+                                String nombre3 = "usuario" + k;
+                                Perfil perfil3 = CaraLibroBD.buscarPerfil(nombre3);
+                                String comentario = "Hola " + perfil3.getNombre() + " soy " + perfil2.getNombre();
+                                Publicacion publicacion2 = perfil.getPublicaciones().get(k);
+                                Comentario comentario2 = new Comentario(comentario);
+                                comentario2.setAutor(perfil2);
+                                publicacion2.engadirComentario(comentario2);
+                            }
+                        }
+                    }
+                break;
                 case "admin":
                     admin();
                     System.out.println("Presiona enter para continuar");

@@ -3,8 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.cara_libro;
-import java.time.LocalDate;
-import java.util.Scanner;
+import java.util.Date;
 
 /**
  *
@@ -13,13 +12,25 @@ import java.util.Scanner;
  */
 public class Comentario {
     
-    public LocalDate data;
+    public Date data;
     public String texto;
-    Scanner teclado = new Scanner(System.in);
-    
-    //Permite comentar una publicacion y muestra la hora del comentario
-    public Comentario(String texto){        
-        texto =teclado.nextLine();
-        System.out.println(/*Aqui iria la hora */); 
+    private Perfil autor;
+
+    public Perfil getAutor() {
+        return autor;
     }
+
+    public void setAutor(Perfil autor) {
+        this.autor = autor;
+    }
+
+    //Permite comentar una publicacion y muestra la hora del comentario
+    public Comentario(String texto){
+        
+        this.texto = texto;
+        this.data = new Date();
+
+    }
+
+
 }

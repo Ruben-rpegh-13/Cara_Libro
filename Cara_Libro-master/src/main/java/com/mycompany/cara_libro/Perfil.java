@@ -15,7 +15,7 @@ class Perfil {
     
     public String nombre;
     public String contraseña;
-    public String estado;
+    public String estado = "No hay estado, aun";
     private ArrayList<Perfil> amigos;
     private ArrayList<String> solicitud;
     private ArrayList<Mensaxe> mensaxes = new ArrayList<Mensaxe>();
@@ -123,7 +123,8 @@ class Perfil {
         mensaxes.remove(mensaxe);
     }
 
-    public void engadirPublicacion(String publicacion) {
-        publicaciones.add(new Publicacion(publicacion));
+    public void engadirPublicacion(Perfil autor, String publicacion) {
+        publicaciones.add(new Publicacion(autor, publicacion));
     }
+
 }
