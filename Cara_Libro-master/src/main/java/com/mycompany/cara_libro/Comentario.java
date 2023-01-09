@@ -29,6 +29,7 @@ public class Comentario {
         
         this.texto = texto;
         this.data = new Date();
+        //esto es un comentario de prueba para hacer commits en github
 
     }
 
